@@ -67,8 +67,12 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  return (
+    queen.x === king.x ||
+    queen.y === king.y ||
+    Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)
+  );
 }
 
 /**
@@ -110,8 +114,57 @@ function isIsoscelesTriangle(a, b, c) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+
+function convertToRomanNumerals(num) {
+  const tens = Math.floor(num / 10);
+  const ones = num % 10;
+  let result = '';
+  switch (tens) {
+    case 1:
+      result += 'X';
+      break;
+    case 2:
+      result += 'XX';
+      break;
+    case 3:
+      result += 'XXX';
+      break;
+    default:
+      break;
+  }
+
+  switch (ones) {
+    case 1:
+      result += 'I';
+      break;
+    case 2:
+      result += 'II';
+      break;
+    case 3:
+      result += 'III';
+      break;
+    case 4:
+      result += 'IV';
+      break;
+    case 5:
+      result += 'V';
+      break;
+    case 6:
+      result += 'VI';
+      break;
+    case 7:
+      result += 'VII';
+      break;
+    case 8:
+      result += 'VIII';
+      break;
+    case 9:
+      result += 'IX';
+      break;
+    default:
+      break;
+  }
+  return result;
 }
 
 /**
@@ -174,7 +227,7 @@ function convertNumberToString(numberStr) {
         word = 'point';
         break;
       default:
-        throw new Error('Неизвестный символ');
+        return 'Неизвестный символ';
     }
 
     if (result.length > 0) {
@@ -329,8 +382,18 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const copyArr = arr;
+  for (let i = 0; i < copyArr.length; i += 1) {
+    let minIndex = i;
+    for (let j = i + 1; j < copyArr.length; j += 1) {
+      if (copyArr[j] < copyArr[minIndex]) {
+        minIndex = j;
+      }
+    }
+    [copyArr[i], copyArr[minIndex]] = [copyArr[minIndex], copyArr[i]];
+  }
+  return copyArr;
 }
 
 /**
