@@ -364,8 +364,27 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixLength = matrix.length;
+  const result = matrix;
+
+  for (let i = 0; i < matrixLength; i += 1) {
+    for (let j = i + 1; j < matrixLength; j += 1) {
+      const temp = matrix[i][j];
+      result[i][j] = result[j][i];
+      result[j][i] = temp;
+    }
+  }
+
+  for (let i = 0; i < matrixLength; i += 1) {
+    for (let j = 0; j < matrixLength / 2; j += 1) {
+      const temp = result[i][j];
+      result[i][j] = result[i][matrixLength - 1 - j];
+      result[i][matrixLength - 1 - j] = temp;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -413,8 +432,24 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  for (let i = 1; i <= iterations; i += 1) {
+    let odd = '';
+    let even = '';
+    for (let j = 0; j < result.length; j += 1) {
+      if (j % 2 === 0) {
+        even += result[j];
+      } else {
+        odd += result[j];
+      }
+    }
+    result = even + odd;
+    if (result === str) {
+      return shuffleChar(str, iterations % i);
+    }
+  }
+  return result;
 }
 
 /**
