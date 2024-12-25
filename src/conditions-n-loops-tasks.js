@@ -320,8 +320,24 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  for (let i = 0; i < arr.length; i += 1) {
+    let sumLeft = 0;
+    let sumRight = 0;
+
+    for (let j = 0; j < i; j += 1) {
+      sumLeft += arr[j];
+    }
+
+    for (let k = i + 1; k < arr.length; k += 1) {
+      sumRight += arr[k];
+    }
+
+    if (sumLeft === sumRight) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -404,13 +420,14 @@ function rotateMatrix(matrix) {
 function sortByAsc(arr) {
   const copyArr = arr;
   for (let i = 0; i < copyArr.length; i += 1) {
-    let minIndex = i;
-    for (let j = i + 1; j < copyArr.length; j += 1) {
-      if (copyArr[j] < copyArr[minIndex]) {
-        minIndex = j;
-      }
+    const sortedDigit = copyArr[i];
+    let posToInsert = i - 1;
+
+    while (posToInsert >= 0 && copyArr[posToInsert] > sortedDigit) {
+      copyArr[posToInsert + 1] = copyArr[posToInsert];
+      posToInsert -= 1;
     }
-    [copyArr[i], copyArr[minIndex]] = [copyArr[minIndex], copyArr[i]];
+    copyArr[posToInsert + 1] = sortedDigit;
   }
   return copyArr;
 }
@@ -434,21 +451,28 @@ function sortByAsc(arr) {
  */
 function shuffleChar(str, iterations) {
   let result = str;
-  for (let i = 1; i <= iterations; i += 1) {
-    let odd = '';
+  let iterationsNum = iterations;
+
+  while (iterationsNum > 0) {
     let even = '';
-    for (let j = 0; j < result.length; j += 1) {
-      if (j % 2 === 0) {
-        even += result[j];
+    let odd = '';
+
+    for (let i = 0; i < result.length; i += 1) {
+      if (i % 2 === 0) {
+        even += result[i];
       } else {
-        odd += result[j];
+        odd += result[i];
       }
     }
+
     result = even + odd;
+    iterationsNum -= 1;
+
     if (result === str) {
-      return shuffleChar(str, iterations % i);
+      iterationsNum = iterations % (iterations - iterationsNum);
     }
   }
+
   return result;
 }
 
@@ -469,8 +493,40 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digits = [];
+  let tempNumber = number;
+  while (tempNumber > 0) {
+    digits.unshift(tempNumber % 10);
+    tempNumber = Math.floor(tempNumber / 10);
+  }
+
+  let i = digits.length - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+
+  if (i < 0) return number;
+
+  let j = digits.length - 1;
+  while (digits[j] <= digits[i]) {
+    j -= 1;
+  }
+
+  [digits[i], digits[j]] = [digits[j], digits[i]];
+
+  for (let k = i + 1; k < digits.length - 1; k += 1) {
+    for (let l = k + 1; l < digits.length; l += 1) {
+      if (digits[k] > digits[l]) {
+        [digits[k], digits[l]] = [digits[l], digits[k]];
+      }
+    }
+  }
+  let resultNumber = 0;
+  for (let m = 0; m < digits.length; m += 1) {
+    resultNumber = resultNumber * 10 + digits[m];
+  }
+  return resultNumber;
 }
 
 module.exports = {
